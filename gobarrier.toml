@@ -1,0 +1,46 @@
+# gobarrier.toml — example configuration
+# Run: gobarrier-server --config gobarrier.toml
+
+[server]
+# Hostname/IP to listen on. "" = all interfaces.
+host        = ""
+port        = 24800
+# This machine's screen name.  Must match a key in [screens.*].
+screen_name = "mac"
+# Uncomment to enable TLS
+# tls       = true
+# cert_file = "server.crt"
+# key_file  = "server.key"
+
+# ── Screen declarations ──────────────────────────────────────────────────────
+# One section per machine.  The key is the screen name clients must pass with
+# --name.  Optionally add aliases for alternate hostnames.
+
+[screens.mac]
+# No extra options needed for the primary screen.
+
+[screens.ubuntu]
+# Delay (ms) before the cursor jumps to this screen when sitting at the edge.
+# Helps prevent accidental switching.
+switch_delay = 150
+
+[screens.windows]
+switch_delay = 150
+
+# ── Screen layout (adjacency links) ─────────────────────────────────────────
+# Each [[links]] block defines one directed edge.
+# gobarrier automatically creates the reverse edge unless you define it
+# explicitly (useful for asymmetric setups).
+#
+# Physical arrangement:
+#   [windows] | [mac] | [ubuntu]
+
+[[links]]
+  from      = "mac"
+  direction = "right"    # move cursor off the RIGHT edge of mac …
+  to        = "ubuntu"   # … and it appears on ubuntu
+
+[[links]]
+  from      = "mac"
+  direction = "left"
+  to        = "windows"
